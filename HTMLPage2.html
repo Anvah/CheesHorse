@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<script>
+    let arr = [];
+    var cI = 0;
+    var cJ = 0;
+    let startTime;
+    let count = 0;
+    for (let i = 0; i < 8; i++) {
+        arr[i] = [];
+        for (let j = 0; j < 8; j++) {
+            arr[i][j] = false;
+        }
+    }
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        let sq;
+        ev.dataTransfer.setData("img", ev.target.id);
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if (((Math.abs(i - cI) == 2 && Math.abs(j - cJ) == 1) || (Math.abs(i - cI) == 1 && Math.abs(j - cJ) == 2)) && arr[i][j] == false)
+                {
+                    sq = document.getElementById(i + "" + j);
+                    sq.style.backgroundColor = "lightgreen";
+                }
+
+            }
+        }
+    }
+
+    function drop(ev)
+    {
+        let sq;
+         for (let k = 0; k < 8; k++)
+        {
+             for (let v = 0; v < 8; v++) {
+                 sq = document.getElementById(k + "" + v);
+                 if (sq.className == "light") {
+                     sq.style.backgroundColor = "#eee";
+                 }
+                 else {
+                     sq.style.backgroundColor = "#CD853F";
+                 }
+             }
+        }
+        var line = ev.target.id;
+        var indexes = line.split('');
+        var i = indexes[0];
+        var j = indexes[1];    
+        if ((Math.abs(i - cI) == 2 && Math.abs(j - cJ) == 1) || (Math.abs(i - cI) == 1 && Math.abs(j - cJ) == 2))
+        {
+            if (arr[i][j] == false) {    
+                
+                count += 1;
+                cI = i;
+                cJ = j; 
+                var lastStep = document.getElementById(cI + "" + cJ);
+                lastStep.innerText = count;
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("img");
+                ev.target.appendChild(document.getElementById(data));
+                arr[i][j] = true;
+            }
+        }
+        if (count >= 64) {
+            let time = (new Date()).getTime() - startTime;
+            alert("Финиш! Время: " + time/1000 + " секунд")
+        }     
+    }
+    function start() 
+    {
+        cI = 0;
+        cJ = 0;
+        count = 0;
+        let sq;
+        var first = document.getElementById("00");
+        first.appendChild(document.getElementById("drag1"));
+        startTime = (new Date()).getTime();
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                arr[i][j] = false;
+            }
+        }
+
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++)
+            {
+                if (j > 0 || i > 0) {
+                     sq = document.getElementById(i + "" + j);
+                    sq.innerText = "";
+                }
+
+            }
+        }
+        arr[0][0] = true;
+        
+    }
+
+</script>
+<style>
+    .chess-board {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+
+        .chess-board th {
+            padding: .10em;
+        }
+
+        .chess-board td {
+            border: 1px solid;
+            width: 4em;
+            height: 4em;
+        }
+
+        .chess-board .light {
+            background: #eee;
+        }
+
+        .chess-board .dark {
+            background: #CD853F;
+        }
+</style>
+
+<body>
+    <table class="chess-board">
+        <tbody>
+            <tr>
+                <td class="light" id="00" ondrop="drop(event)" ondragover="allowDrop(event)"> </td>
+                <td class="dark" id="01" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="02" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="03" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="04" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="05" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="06" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="07" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="dark" id="10" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="11" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="12" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="13" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="14" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="15" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="16" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="17" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="light" id="20" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="21" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="22" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="23" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="24" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="25" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="26" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="27" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="dark" id="30" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="31" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="32" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="33" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="34" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="35" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="36" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="37" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="light" id="40" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="41" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="42" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="43" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="44" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="45" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="46" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="47" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="dark" id="50" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="51" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="52" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="53" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="54" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="55" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="56" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="57" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="light" id="60" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="61" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="62" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="63" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="64" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="65" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="66" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="67" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+            <tr>
+                <td class="dark" id="70" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="71" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="72" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="73" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="74" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="75" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="dark" id="76" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+                <td class="light" id="77" ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit" id="start" onclick="start()">Старт</button>
+    <img id="drag1" src="Hourse.png" draggable="true" ondragstart="drag(event)" width="40" height="40">
+</body>
+</html>
